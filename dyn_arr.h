@@ -36,9 +36,13 @@ void *arr_init(size_t item_size, size_t capacity);
 void *arr_ensure_capacity(void *arr, size_t item_count, size_t item_size);
 
 #define ARR_APPEND(arr, v) ( \
-    (arr) = arr_ensure_capacity(arr, 1, sizeof((void)v)), \
+    (arr) = arr_ensure_capacity(arr, ARR_LEN(arr) + 1, sizeof(v)), \
     (arr)[ARR_HEADER(arr)->len] = (v), \
     &(arr)[ARR_HEADER(arr)->len++] )
+
+void *arr_clear(void *arr);
+
+void arr_free(void *arr);
 
 #endif // end DYN_ARR_H
 
@@ -60,12 +64,26 @@ void *arr_init(size_t item_size, size_t capacity) {
 
 void *arr_ensure_capacity(void *a, size_t item_count, size_t item_size) {
     ArrHeader *h = ARR_HEADER(a);
-    size_t desired_capacity = h->len + item_count;
-    if (h->cap < desired_capacity)
-        h = realloc(h, sizeof(ArrHeader) + desired_capacity);
+    if (h->cap < item_count) {
+        h = realloc(h, sizeof(ArrHeader) + item_size * item_count);
+        h->cap = item_count;
+    }
     if (h)
         ++h;
     return h;
+}
+
+void *arr_clear(void *arr) {
+    ArrHeader *h = ARR_HEADER(arr);
+    h = realloc(h, sizeof(ArrHeader));
+    h->len = 0;
+    h->cap = 0;
+
+    return h + 1;
+}
+
+void arr_free(void *arr) {
+    free(ARR_HEADER(arr));
 }
 
 #endif
