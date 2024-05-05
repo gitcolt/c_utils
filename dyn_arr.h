@@ -12,6 +12,7 @@
  * for (int i = 0; i < ARR_LEN(arr); ++i) {
  *      printf("arr[%d]: %.2f\n", i, arr[i]);
  * }
+ * arr_free(arr);
  */
 
 #ifndef DYN_ARR_H
