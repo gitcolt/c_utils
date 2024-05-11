@@ -1,5 +1,5 @@
 /*
- * Example usage (example.c):
+ * Example usage:
  * 
  * #define DYN_ARR_IMPL
  * #include "dyn_arr.h"
