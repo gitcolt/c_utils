@@ -4,17 +4,17 @@
  * typedef struct { int x; int y; } Point;
  * 
  * int main() {
- *     Q q;
- *     q_init(&q);
+ *     Q *q = q_init();
  *     Point a = { .x = 111, .y = 222 };
  *     Point b = { .x = 333, .y = 444 };
- *     q_enqueue(&q, &a);
- *     q_enqueue(&q, &b);
+ *     q_enqueue(q, &a);
+ *     q_enqueue(q, &b);
  * 
- *     while (!q_empty(&q)) {
- *         Point *point = q_dequeue(&q);
+ *     while (!q_empty(q)) {
+ *         Point *point = q_dequeue(q);
  *         printf("(%d, %d)\n", point->x, point->y);
  *     }
+ *     q_destroy(q);
  * }
  */
 
@@ -34,9 +34,11 @@ typedef struct {
     QNode *tail;
 } Q;
 
-void q_init(Q *q);
+Q *q_init();
 void q_enqueue(Q *q, void *val);
 void *q_dequeue(Q *q);
+void *q_peek(Q *q);
+void q_destroy(Q *q);
 #define q_empty(q_ptr) !(q_ptr)->head
 
 #endif
