@@ -34,10 +34,11 @@ typedef struct {
     QNode *tail;
 } Q;
 
-Q *q_init();
+Q *q_create();
 void q_enqueue(Q *q, void *val);
 void *q_dequeue(Q *q);
 void *q_peek(Q *q);
+void *q_peek_tail(Q *q);
 void q_destroy(Q *q);
 #define q_empty(q_ptr) !(q_ptr)->head
 

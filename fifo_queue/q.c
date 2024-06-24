@@ -3,7 +3,7 @@
 #include <malloc.h>
 #include <memory.h>
 
-Q *q_init() {
+Q *q_create() {
     Q *q = malloc(sizeof(*q));
     q->head = NULL;
     q->tail = NULL;
@@ -41,6 +41,12 @@ void *q_peek(Q *q) {
     if (!q->head)
         return NULL;
     return q->head->val;
+}
+
+void *q_peek_tail(Q *q) {
+    if (!q->tail)
+        return NULL;
+    return q->tail->val;
 }
 
 void q_destroy(Q *q) {
