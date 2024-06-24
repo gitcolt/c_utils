@@ -34,6 +34,7 @@ typedef struct {
     int line_num;
 } FailedTestSummary;
 
+static int num_tests_run = 0;
 static int num_failed_tests = 0;
 static enum TestStatus test_status;
 
@@ -79,8 +80,14 @@ static FailedTestSummary failed_tests[FAILED_TESTS_MAX];
     do { \
         name(); \
         printf("\n"); \
+        int num_passed_tests = num_tests_run - num_failed_tests; \
+        const char *fmt_str = GRN_TXT "(%d/%d)\n\n" RST_COL; \
+        const char *fmt_str2 = "(%d/%d)\n\n"; \
+        printf(!num_failed_tests ? fmt_str : fmt_str2, \
+               num_passed_tests, \
+               num_tests_run); \
         if (num_failed_tests) { \
-            printf("\nfailed tests:\n"); \
+            printf("failed tests:\n"); \
             for (int i = 0; i < num_failed_tests; ++i) { \
                 printf(RED_TXT "%s (%s: %d)\n" RST_COL, \
                        failed_tests[i].test_name, \
@@ -101,6 +108,7 @@ static FailedTestSummary failed_tests[FAILED_TESTS_MAX];
         } else { \
             printf(GRN_TXT "." RST_COL); \
         } \
+        ++num_tests_run; \
     } while (0)
 
 #endif
